@@ -9,8 +9,8 @@
 body {
   margin: 0;
   overflow: hidden;
-  font-family: 'Arial', sans-serif;
-  background: radial-gradient(circle at center, #05070d, #000000);
+  font-family: Arial, sans-serif;
+  background: radial-gradient(circle at center, #060b1a, #000000);
   color: white;
 }
 
@@ -20,6 +20,7 @@ body {
   height: 100%;
 }
 
+/* Overlay improved for tech feel */
 .overlay {
   position: absolute;
   z-index: 10;
@@ -28,29 +29,27 @@ body {
   width: 100%;
   transform: translateY(-50%);
   padding: 20px;
-  background: rgba(0,0,0,0.25);
-  backdrop-filter: blur(8px);
+  background: rgba(0,0,0,0.2);
+  backdrop-filter: blur(10px);
 }
 
 h1 {
-  font-size: 42px;
-  letter-spacing: 3px;
-  margin-bottom: 10px;
+  font-size: 44px;
+  letter-spacing: 4px;
 }
 
 h2 {
-  font-size: 14px;
-  color: #00d4ff;
-  letter-spacing: 2px;
-  margin-bottom: 20px;
+  font-size: 13px;
+  color: #00e5ff;
+  letter-spacing: 3px;
 }
 
 p {
-  max-width: 700px;
+  max-width: 720px;
   margin: auto;
   font-size: 15px;
   line-height: 1.6;
-  color: #d0d0d0;
+  color: #cfd8ff;
 }
 
 .buttons {
@@ -64,29 +63,18 @@ button {
   border: none;
   cursor: pointer;
   font-weight: bold;
-  letter-spacing: 1px;
-  transition: 0.3s;
 }
 
 .btn-primary {
-  background: linear-gradient(45deg, #00d4ff, #0077ff);
+  background: linear-gradient(45deg, #00e5ff, #0066ff);
   color: white;
-  box-shadow: 0 0 15px rgba(0,212,255,0.4);
-}
-
-.btn-primary:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 25px rgba(0,212,255,0.7);
+  box-shadow: 0 0 20px rgba(0,229,255,0.5);
 }
 
 .btn-secondary {
   background: transparent;
-  border: 1px solid #00d4ff;
-  color: #00d4ff;
-}
-
-.btn-secondary:hover {
-  background: rgba(0,212,255,0.1);
+  border: 1px solid #00e5ff;
+  color: #00e5ff;
 }
 </style>
 </head>
@@ -107,7 +95,7 @@ button {
     We are not just an organization. We are a coordinated global response system —
     designed to reach the unseen, support the unheard, and rebuild lives at scale.
     <br><br>
-    Founded by Tidimalo Konaite. Inspired by Paul, Apostle of Christ.
+    Founded by Tidimalo Konate. Inspired by Paul, Apostle of Christ.
   </p>
 
   <div class="buttons">
@@ -120,87 +108,103 @@ button {
 
 <script>
 const scene = new THREE.Scene();
+scene.fog = new THREE.Fog(0x000814, 2, 6); // AI depth effect
 
+// 🎥 CAMERA (FIXED: closer + immersive)
 const camera = new THREE.PerspectiveCamera(
-  75, window.innerWidth / window.innerHeight, 0.1, 1000
+  55,
+  window.innerWidth / window.innerHeight,
+  0.1,
+  1000
 );
-camera.position.z = 2.5;
+
+camera.position.z = 1.9;
 
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.getElementById("container").appendChild(renderer.domElement);
 
-// 🌍 Texture (brighter, clearer Earth)
+// 🌍 EARTH TEXTURE (clean + bright)
 const textureLoader = new THREE.TextureLoader();
 const earthTexture = textureLoader.load(
   "https://threejs.org/examples/textures/planets/earth_atmos_2048.jpg"
 );
 
-// 🌍 Globe
+// 🌍 GLOBE
 const geometry = new THREE.SphereGeometry(1, 64, 64);
+
 const material = new THREE.MeshStandardMaterial({
   map: earthTexture,
-  roughness: 1,
-  metalness: 0,
+  roughness: 0.4,
+  metalness: 0.1,
 });
+
 const earth = new THREE.Mesh(geometry, material);
 scene.add(earth);
 
-// 💡 LIGHTING (balanced, soft cinematic)
-const ambientLight = new THREE.AmbientLight(0x404040, 1.2);
+// 💡 LIGHTING (THIS IS THE BIG UPGRADE)
+const ambientLight = new THREE.AmbientLight(0xffffff, 1.4);
 scene.add(ambientLight);
 
-const directionalLight = new THREE.DirectionalLight(0xffffff, 1.5);
+const directionalLight = new THREE.DirectionalLight(0xffffff, 2.2);
 directionalLight.position.set(5, 3, 5);
 scene.add(directionalLight);
 
-// 🌌 Subtle glow (reduced intensity)
-const glowGeometry = new THREE.SphereGeometry(1.15, 64, 64);
+const aiLight = new THREE.PointLight(0x00e5ff, 1.8, 10);
+aiLight.position.set(0, 0, 3);
+scene.add(aiLight);
+
+// 🌌 GLOW LAYER (STRONGER + MORE AI FEEL)
+const glowGeometry = new THREE.SphereGeometry(1.08, 64, 64);
 const glowMaterial = new THREE.MeshBasicMaterial({
-  color: 0x00d4ff,
+  color: 0x00e5ff,
   transparent: true,
-  opacity: 0.08
+  opacity: 0.15
 });
+
 const glow = new THREE.Mesh(glowGeometry, glowMaterial);
 scene.add(glow);
 
-// ✨ Stars (less aggressive, more natural)
+// ✨ STARS (kept subtle)
 const starsGeometry = new THREE.BufferGeometry();
-const starsCount = 1500;
 const positions = [];
 
-for (let i = 0; i < starsCount; i++) {
+for (let i = 0; i < 1200; i++) {
   positions.push((Math.random() - 0.5) * 200);
   positions.push((Math.random() - 0.5) * 200);
   positions.push((Math.random() - 0.5) * 200);
 }
 
 starsGeometry.setAttribute(
-  'position',
+  "position",
   new THREE.Float32BufferAttribute(positions, 3)
 );
 
-const starsMaterial = new THREE.PointsMaterial({
-  size: 0.6,
-  opacity: 0.6,
-  transparent: true
-});
+const stars = new THREE.Points(
+  starsGeometry,
+  new THREE.PointsMaterial({
+    size: 0.7,
+    transparent: true,
+    opacity: 0.7
+  })
+);
 
-const stars = new THREE.Points(starsGeometry, starsMaterial);
 scene.add(stars);
 
-// 🔄 Animation
+// 🔄 ANIMATION
 function animate() {
   requestAnimationFrame(animate);
 
-  earth.rotation.y += 0.0015;
-  glow.rotation.y += 0.0015;
+  earth.rotation.y += 0.0012;
+  glow.rotation.y += 0.0012;
+  stars.rotation.y += 0.0002;
 
   renderer.render(scene, camera);
 }
+
 animate();
 
-// 📱 Responsive
+// 📱 RESIZE
 window.addEventListener("resize", () => {
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
