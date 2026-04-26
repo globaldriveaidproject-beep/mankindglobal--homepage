@@ -8,44 +8,93 @@
 <style>
 body {
   margin: 0;
-  background: #000;
-  color: white;
+  background: radial-gradient(circle at center, #050510, #000000);
+  color: #ffffff;
   font-family: Arial, sans-serif;
   overflow: hidden;
 }
 
+/* GLOBE */
 #globe {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
+  opacity: 0.6;
 }
 
+/* OVERLAY */
 .overlay {
   position: absolute;
   top: 0;
   width: 100%;
   text-align: center;
-  padding-top: 100px;
+  padding-top: 120px;
 }
 
+/* TITLE */
 h1 {
-  font-size: 3em;
-  letter-spacing: 2px;
+  font-size: 3.5em;
+  letter-spacing: 3px;
+  text-shadow: 0 0 20px #00f0ff;
 }
 
+/* SUBTEXT */
 p {
-  max-width: 700px;
-  margin: auto;
-  opacity: 0.8;
+  max-width: 800px;
+  margin: 20px auto;
+  opacity: 0.85;
+  line-height: 1.6;
+}
+
+/* SYSTEM TEXT */
+.system {
+  margin-top: 20px;
+  color: #00f0ff;
+  font-size: 0.9em;
+  letter-spacing: 2px;
+  animation: flicker 2s infinite alternate;
+}
+
+@keyframes flicker {
+  0% { opacity: 0.4; }
+  100% { opacity: 1; }
+}
+
+/* BUTTONS */
+.buttons {
+  margin-top: 30px;
 }
 
 .button {
-  margin-top: 20px;
+  display: inline-block;
+  margin: 10px;
   padding: 15px 30px;
-  border: 1px solid white;
+  border: 1px solid #00f0ff;
+  color: #00f0ff;
   cursor: pointer;
+  transition: 0.3s;
+}
+
+.button:hover {
+  background: #00f0ff;
+  color: #000;
+  box-shadow: 0 0 20px #00f0ff;
+}
+
+/* SCAN LINE EFFECT */
+.scanline {
+  position: fixed;
+  width: 100%;
+  height: 2px;
+  background: rgba(0,255,255,0.2);
+  animation: scan 6s linear infinite;
+}
+
+@keyframes scan {
+  0% { top: 0; }
+  100% { top: 100%; }
 }
 </style>
 </head>
@@ -53,20 +102,34 @@ p {
 <body>
 
 <canvas id="globe"></canvas>
+<div class="scanline"></div>
 
 <div class="overlay">
   <h1>MANKIND GLOBAL</h1>
+
+  <div class="system">
+    NEXPATH AI // GLOBAL HUMANITARIAN ENGINE ONLINE
+  </div>
+
   <p>
-    A global humanitarian intelligence system powered by NexPath AI.
-    Delivering aid, restoring dignity, and connecting humanity worldwide.
+    A Global Humanitarian Intelligence System powered by NexPath AI — delivering aid,
+    restoring dignity, and connecting humanity across borders through technology,
+    compassion, and action.
+  </p>
+
+  <p>
+    We are not just an organization. We are a coordinated global response system —
+    designed to reach the unseen, support the unheard, and rebuild lives at scale.
   </p>
 
   <p>
     Founded by Tidimalo Konaite. Inspired by Paul, Apostle of Christ.
   </p>
 
-  <div class="button">Request Help</div>
-  <div class="button">Donate</div>
+  <div class="buttons">
+    <div class="button">Request Help</div>
+    <div class="button">Donate</div>
+  </div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -89,7 +152,7 @@ camera.position.z = 3;
 
 function animate() {
   requestAnimationFrame(animate);
-  sphere.rotation.y += 0.002;
+  sphere.rotation.y += 0.0015;
   renderer.render(scene, camera);
 }
 animate();
