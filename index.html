@@ -1,113 +1,105 @@
-<!-- HERO + MISSION SECTIONS -->
-<section id="hero" class="hero-section">
-  <div class="hero-content">
-    <h1>Mankind Global / Helping Hand Community</h1>
-    <p>Your support and volunteer efforts make a difference worldwide.</p>
-    <a href="#mission" class="btn-primary">Explore Our Mission</a>
-  </div>
-  <div class="hero-background">
-    <!-- Placeholder for futuristic tech animation or glowing globe -->
-    <canvas id="globeCanvas"></canvas>
-  </div>
-</section>
-
-<section id="mission" class="mission-section">
-  <div class="mission-content">
-    <h2>Our Mission</h2>
-    <p>
-      Mankind Global / Helping Hand Community exists to provide assistance, hope, and support 
-      to those in need worldwide, including the voiceless and imprisoned. We inspire through 
-      stories, prayers, and teachings of Lord Jesus Christ, translated for everyone to understand.
-    </p>
-  </div>
-</section>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mankind Global | NexPath AI</title>
 
 <style>
-  body {
-    font-family: 'Poppins', sans-serif;
-    margin: 0;
-    background-color: #0b0c10;
-    color: #ffffff;
-    scroll-behavior: smooth;
-  }
+body {
+  margin: 0;
+  background: #000;
+  color: white;
+  font-family: Arial, sans-serif;
+  overflow: hidden;
+}
 
-  /* HERO SECTION */
-  .hero-section {
-    position: relative;
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    overflow: hidden;
-  }
+#globe {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
 
-  .hero-content {
-    z-index: 2;
-    max-width: 800px;
-    padding: 20px;
-  }
+.overlay {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  text-align: center;
+  padding-top: 100px;
+}
 
-  .hero-content h1 {
-    font-size: 3rem;
-    color: #00ffea;
-    margin-bottom: 1rem;
-  }
+h1 {
+  font-size: 3em;
+  letter-spacing: 2px;
+}
 
-  .hero-content p {
-    font-size: 1.25rem;
-    color: #ffffffaa;
-    margin-bottom: 2rem;
-  }
+p {
+  max-width: 700px;
+  margin: auto;
+  opacity: 0.8;
+}
 
-  .btn-primary {
-    display: inline-block;
-    padding: 1rem 2rem;
-    background: #00ffea;
-    color: #0b0c10;
-    font-weight: bold;
-    text-decoration: none;
-    border-radius: 8px;
-    transition: 0.3s;
-  }
-
-  .btn-primary:hover {
-    background: #00bfa1;
-  }
-
-  .hero-background {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 1;
-  }
-
-  #globeCanvas {
-    width: 100%;
-    height: 100%;
-  }
-
-  /* MISSION SECTION */
-  .mission-section {
-    padding: 80px 20px;
-    background-color: #111318;
-    color: #ffffff;
-    text-align: center;
-  }
-
-  .mission-section h2 {
-    font-size: 2.5rem;
-    color: #00ffea;
-    margin-bottom: 1rem;
-  }
-
-  .mission-section p {
-    font-size: 1.25rem;
-    max-width: 800px;
-    margin: 0 auto;
-    line-height: 1.6;
-    color: #ffffffcc;
-  }
+.button {
+  margin-top: 20px;
+  padding: 15px 30px;
+  border: 1px solid white;
+  cursor: pointer;
+}
 </style>
+</head>
+
+<body>
+
+<canvas id="globe"></canvas>
+
+<div class="overlay">
+  <h1>MANKIND GLOBAL</h1>
+  <p>
+    A global humanitarian intelligence system powered by NexPath AI.
+    Delivering aid, restoring dignity, and connecting humanity worldwide.
+  </p>
+
+  <p>
+    Founded by Tidimalo Konaite. Inspired by Paul, Apostle of Christ.
+  </p>
+
+  <div class="button">Request Help</div>
+  <div class="button">Donate</div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+<script>
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+
+const renderer = new THREE.WebGLRenderer({canvas: document.getElementById("globe"), alpha:true});
+renderer.setSize(window.innerWidth, window.innerHeight);
+
+const geometry = new THREE.SphereGeometry(2, 64, 64);
+const texture = new THREE.TextureLoader().load('https://threejs.org/examples/textures/land_ocean_ice_cloud_2048.jpg');
+const material = new THREE.MeshBasicMaterial({ map: texture });
+
+const sphere = new THREE.Mesh(geometry, material);
+scene.add(sphere);
+
+camera.position.z = 3;
+
+function animate() {
+  requestAnimationFrame(animate);
+  sphere.rotation.y += 0.002;
+  renderer.render(scene, camera);
+}
+animate();
+
+window.addEventListener('resize', () => {
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  camera.aspect = window.innerWidth/window.innerHeight;
+  camera.updateProjectionMatrix();
+});
+</script>
+
+</body>
+</html>
