@@ -2,21 +2,143 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>NexPath AI - Network Globe</title>
+<title>Mankind Global | NexPath AI</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
 body {
   margin: 0;
   overflow: hidden;
-  background: radial-gradient(circle, #050816, #000);
+  font-family: Arial, sans-serif;
+  background: radial-gradient(circle at center, #040712, #000);
+  color: white;
 }
-#container { width: 100%; height: 100%; }
+
+/* 🌍 Globe container */
+#container {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+}
+
+/* 🧠 Top system label */
+.top-bar {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  color: #00e5ff;
+  font-size: 12px;
+  letter-spacing: 2px;
+  z-index: 10;
+}
+
+/* ⚡ Status panel */
+.status {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  text-align: right;
+  font-size: 12px;
+  color: #00ffcc;
+  z-index: 10;
+}
+
+/* 📄 Left info panel */
+.info {
+  position: absolute;
+  left: 40px;
+  bottom: 100px;
+  max-width: 420px;
+  z-index: 10;
+}
+
+.info h1 {
+  font-size: 40px;
+  margin: 0;
+  letter-spacing: 3px;
+}
+
+.info h2 {
+  font-size: 12px;
+  color: #ff6a00;
+  letter-spacing: 2px;
+  margin-bottom: 15px;
+}
+
+.info p {
+  font-size: 14px;
+  line-height: 1.6;
+  color: #ccc;
+}
+
+/* 🆘 Buttons */
+.actions {
+  position: absolute;
+  bottom: 40px;
+  left: 40px;
+  z-index: 10;
+}
+
+button {
+  padding: 12px 25px;
+  border-radius: 30px;
+  border: none;
+  margin-right: 10px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.primary {
+  background: linear-gradient(45deg, #ff6a00, #ff3300);
+  color: white;
+  box-shadow: 0 0 20px rgba(255,100,0,0.6);
+}
+
+.secondary {
+  background: transparent;
+  border: 1px solid #00e5ff;
+  color: #00e5ff;
+}
+
+button:hover {
+  transform: scale(1.05);
+}
 </style>
 </head>
 
 <body>
+
 <div id="container"></div>
+
+<div class="top-bar">
+  NEXPATH AI // HUMANITARIAN INTELLIGENCE CORE
+</div>
+
+<div class="status">
+  SYSTEM STATUS: ONLINE<br>
+  GLOBAL NETWORK: ACTIVE
+</div>
+
+<div class="info">
+  <h1>MANKIND GLOBAL</h1>
+  <h2>GLOBAL HUMANITARIAN ENGINE ONLINE</h2>
+
+  <p>
+    A Global Humanitarian Intelligence System powered by NexPath AI — delivering aid,
+    restoring dignity, and connecting humanity across borders through technology,
+    compassion, and action.
+    <br><br>
+    We are not just an organization. We are a coordinated global response system —
+    designed to reach the unseen, support the unheard, and rebuild lives at scale.
+    <br><br>
+    Founded by Tidimalo Konate. Inspired by Paul, Apostle of Christ.
+  </p>
+</div>
+
+<div class="actions">
+  <button class="primary">Request Help</button>
+  <button class="secondary">Donate</button>
+</div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
@@ -30,80 +152,79 @@ const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.getElementById("container").appendChild(renderer.domElement);
 
-// 🌍 DIGITAL GLOBE (NO TEXTURE)
-const geometry = new THREE.SphereGeometry(1, 64, 64);
-const material = new THREE.MeshBasicMaterial({
-  color: 0x0a1a2f,
-  wireframe: true,
-  opacity: 0.3,
-  transparent: true
-});
-const globe = new THREE.Mesh(geometry, material);
+/* 🌐 AI NETWORK GLOBE */
+const globe = new THREE.Mesh(
+  new THREE.SphereGeometry(1, 64, 64),
+  new THREE.MeshBasicMaterial({
+    color: 0x0a1a2f,
+    wireframe: true,
+    transparent: true,
+    opacity: 0.35
+  })
+);
 scene.add(globe);
 
-// ✨ NODES
+/* 🔥 NODES */
 const nodeMaterial = new THREE.MeshBasicMaterial({ color: 0xff6a00 });
 
-for (let i = 0; i < 120; i++) {
-  const lat = Math.random() * 180 - 90;
-  const lng = Math.random() * 360 - 180;
-
-  const phi = (90 - lat) * Math.PI / 180;
-  const theta = (lng + 180) * Math.PI / 180;
-
-  const x = Math.sin(phi) * Math.cos(theta);
-  const y = Math.cos(phi);
-  const z = Math.sin(phi) * Math.sin(theta);
+for (let i = 0; i < 150; i++) {
+  const phi = Math.random() * Math.PI;
+  const theta = Math.random() * Math.PI * 2;
 
   const node = new THREE.Mesh(
-    new THREE.SphereGeometry(0.01, 8, 8),
+    new THREE.SphereGeometry(0.012, 8, 8),
     nodeMaterial
   );
 
-  node.position.set(x, y, z);
+  node.position.setFromSphericalCoords(1, phi, theta);
   scene.add(node);
 }
 
-// ⚡ CONNECTION LINES
-function connectPoints() {
-  for (let i = 0; i < 50; i++) {
-    const start = new THREE.Vector3().setFromSphericalCoords(1, Math.random()*Math.PI, Math.random()*Math.PI*2);
-    const end = new THREE.Vector3().setFromSphericalCoords(1, Math.random()*Math.PI, Math.random()*Math.PI*2);
+/* ⚡ CONNECTIONS */
+for (let i = 0; i < 60; i++) {
+  const start = new THREE.Vector3().setFromSphericalCoords(1, Math.random()*Math.PI, Math.random()*Math.PI*2);
+  const end = new THREE.Vector3().setFromSphericalCoords(1, Math.random()*Math.PI, Math.random()*Math.PI*2);
 
-    const curve = new THREE.QuadraticBezierCurve3(
-      start,
-      start.clone().add(end).multiplyScalar(0.5).normalize().multiplyScalar(1.5),
-      end
-    );
+  const curve = new THREE.QuadraticBezierCurve3(
+    start,
+    start.clone().add(end).multiplyScalar(0.5).normalize().multiplyScalar(1.5),
+    end
+  );
 
-    const points = curve.getPoints(50);
-    const geometry = new THREE.BufferGeometry().setFromPoints(points);
+  const points = curve.getPoints(50);
+  const geometry = new THREE.BufferGeometry().setFromPoints(points);
 
-    const line = new THREE.Line(geometry, new THREE.LineBasicMaterial({
-      color: 0x00e5ff,
-      transparent: true,
-      opacity: 0.6
-    }));
+  const line = new THREE.Line(geometry, new THREE.LineBasicMaterial({
+    color: 0x00e5ff,
+    transparent: true,
+    opacity: 0.6
+  }));
 
-    scene.add(line);
-  }
+  scene.add(line);
 }
 
-connectPoints();
-
-// 💡 LIGHT
+/* 💡 LIGHT */
 const light = new THREE.PointLight(0xff6a00, 2);
 light.position.set(2,2,2);
 scene.add(light);
 
-// 🔄 ANIMATE
+/* 🔄 ANIMATION */
 function animate() {
   requestAnimationFrame(animate);
   globe.rotation.y += 0.0015;
   scene.rotation.y += 0.0005;
   renderer.render(scene, camera);
 }
+
 animate();
+
+/* 📱 RESIZE */
+window.addEventListener("resize", () => {
+  camera.aspect = window.innerWidth/window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+});
 </script>
+
 </body>
 </html>
