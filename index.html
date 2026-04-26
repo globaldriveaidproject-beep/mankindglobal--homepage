@@ -1,27 +1,126 @@
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mankind Global | NexPath AI</title>
 
-<script>
-const scene = new THREE.Scene();
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      font-family: Arial, sans-serif;
+      background: radial-gradient(circle at center, #050816, #02030a);
+      color: white;
+    }
 
-const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
-camera.position.z = 3;
+    #overlay {
+      position: absolute;
+      top: 50%;
+      left: 5%;
+      transform: translateY(-50%);
+      max-width: 500px;
+      z-index: 10;
+    }
 
-const renderer = new THREE.WebGLRenderer({ antialias: true });
-renderer.setSize(window.innerWidth, window.innerHeight);
-document.body.appendChild(renderer.domElement);
+    h1 {
+      font-size: 48px;
+      margin-bottom: 10px;
+      letter-spacing: 2px;
+    }
 
-// simple globe
-const geometry = new THREE.SphereGeometry(1, 64, 64);
-const material = new THREE.MeshBasicMaterial({ color: 0x00aaff, wireframe: true });
+    p {
+      opacity: 0.8;
+      line-height: 1.6;
+    }
 
-const globe = new THREE.Mesh(geometry, material);
-scene.add(globe);
+    .btn {
+      margin-top: 20px;
+      padding: 12px 20px;
+      border-radius: 25px;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+    }
 
-function animate() {
-  requestAnimationFrame(animate);
-  globe.rotation.y += 0.002;
-  renderer.render(scene, camera);
-}
+    .primary {
+      background: #ff7a18;
+      color: white;
+    }
 
-animate();
-</script>
+    .secondary {
+      background: transparent;
+      border: 1px solid #00cfff;
+      color: #00cfff;
+      margin-left: 10px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="overlay">
+    <h1>MANKIND GLOBAL</h1>
+    <p>
+      NexPath AI Humanitarian Intelligence System — delivering aid,
+      restoring dignity, and connecting humanity through technology.
+    </p>
+
+    <button class="btn primary">Request Help</button>
+    <button class="btn secondary">Donate</button>
+  </div>
+
+  <!-- Three.js CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+  <script>
+    let scene, camera, renderer, globe;
+
+    function init() {
+      scene = new THREE.Scene();
+
+      camera = new THREE.PerspectiveCamera(
+        75,
+        window.innerWidth / window.innerHeight,
+        0.1,
+        1000
+      );
+      camera.position.z = 3;
+
+      renderer = new THREE.WebGLRenderer({ antialias: true });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      document.body.appendChild(renderer.domElement);
+
+      // Globe (safe version: no textures = no crashes)
+      const geometry = new THREE.SphereGeometry(1, 64, 64);
+      const material = new THREE.MeshBasicMaterial({
+        color: 0x00cfff,
+        wireframe: true
+      });
+
+      globe = new THREE.Mesh(geometry, material);
+      scene.add(globe);
+
+      animate();
+    }
+
+    function animate() {
+      requestAnimationFrame(animate);
+
+      globe.rotation.y += 0.002;
+
+      renderer.render(scene, camera);
+    }
+
+    window.onload = init;
+
+    // Responsive
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+  </script>
+
+</body>
+</html>
