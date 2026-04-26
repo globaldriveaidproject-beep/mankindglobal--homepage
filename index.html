@@ -3,119 +3,25 @@
 <script>
 const scene = new THREE.Scene();
 
-const camera = new THREE.PerspectiveCamera(50, window.innerWidth/window.innerHeight, 0.1, 1000);
-camera.position.z = 2;
+const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+camera.position.z = 3;
 
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
-document.getElementById("container").appendChild(renderer.domElement);
+document.body.appendChild(renderer.domElement);
 
-/* 🌐 DIGITAL GLOBE */
-const globe = new THREE.Mesh(
-  new THREE.SphereGeometry(1, 64, 64),
-  new THREE.MeshBasicMaterial({
-    color: 0x0a1a2f,
-    wireframe: true,
-    transparent: true,
-    opacity: 0.35
-  })
-);
+// simple globe
+const geometry = new THREE.SphereGeometry(1, 64, 64);
+const material = new THREE.MeshBasicMaterial({ color: 0x00aaff, wireframe: true });
+
+const globe = new THREE.Mesh(geometry, material);
 scene.add(globe);
 
-/* 🔥 PULSING NODES (AI SIGNALS) */
-const nodes = [];
-
-for (let i = 0; i < 120; i++) {
-  const phi = Math.random() * Math.PI;
-  const theta = Math.random() * Math.PI * 2;
-
-  const node = new THREE.Mesh(
-    new THREE.SphereGeometry(0.012, 8, 8),
-    new THREE.MeshBasicMaterial({ color: 0xff6a00 })
-  );
-
-  node.position.setFromSphericalCoords(1, phi, theta);
-  scene.add(node);
-  nodes.push(node);
-}
-
-/* ⚡ ROUTES */
-const routes = [];
-
-for (let i = 0; i < 40; i++) {
-  const start = new THREE.Vector3().setFromSphericalCoords(1, Math.random()*Math.PI, Math.random()*Math.PI*2);
-  const end = new THREE.Vector3().setFromSphericalCoords(1, Math.random()*Math.PI, Math.random()*Math.PI*2);
-
-  const curve = new THREE.QuadraticBezierCurve3(
-    start,
-    start.clone().add(end).multiplyScalar(0.5).normalize().multiplyScalar(1.5),
-    end
-  );
-
-  const points = curve.getPoints(60);
-  const geometry = new THREE.BufferGeometry().setFromPoints(points);
-
-  const material = new THREE.LineBasicMaterial({
-    color: 0x00e5ff,
-    transparent: true,
-    opacity: 0.4
-  });
-
-  const line = new THREE.Line(geometry, material);
-  scene.add(line);
-
-  routes.push({ curve, line, progress: Math.random() });
-}
-
-/* 🚀 DATA FLOW PARTICLES */
-const particles = [];
-
-routes.forEach(route => {
-  const particle = new THREE.Mesh(
-    new THREE.SphereGeometry(0.01, 8, 8),
-    new THREE.MeshBasicMaterial({ color: 0x00e5ff })
-  );
-
-  scene.add(particle);
-  particles.push({ particle, route });
-});
-
-/* 💡 LIGHT */
-const light = new THREE.PointLight(0xff6a00, 2);
-light.position.set(2,2,2);
-scene.add(light);
-
-/* 🔄 ANIMATION */
 function animate() {
   requestAnimationFrame(animate);
-
-  globe.rotation.y += 0.001;
-  scene.rotation.y += 0.0003;
-
-  // 🔥 Pulse nodes
-  nodes.forEach((node, i) => {
-    const scale = 1 + Math.sin(Date.now() * 0.003 + i) * 0.5;
-    node.scale.set(scale, scale, scale);
-  });
-
-  // 🚀 Move particles along routes
-  particles.forEach(p => {
-    p.route.progress += 0.002;
-    if (p.route.progress > 1) p.route.progress = 0;
-
-    const pos = p.route.curve.getPoint(p.route.progress);
-    p.particle.position.copy(pos);
-  });
-
+  globe.rotation.y += 0.002;
   renderer.render(scene, camera);
 }
 
 animate();
-
-/* 📱 RESIZE */
-window.addEventListener("resize", () => {
-  camera.aspect = window.innerWidth/window.innerHeight;
-  camera.updateProjectionMatrix();
-  renderer.setSize(window.innerWidth, window.innerHeight);
-});
 </script>
