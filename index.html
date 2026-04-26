@@ -1,145 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<title>Mankind Global | NexPath AI</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<style>
-body {
-  margin: 0;
-  overflow: hidden;
-  font-family: Arial, sans-serif;
-  background: radial-gradient(circle at center, #040712, #000);
-  color: white;
-}
-
-/* 🌍 Globe container */
-#container {
-  position: fixed;
-  width: 100%;
-  height: 100%;
-}
-
-/* 🧠 Top system label */
-.top-bar {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  color: #00e5ff;
-  font-size: 12px;
-  letter-spacing: 2px;
-  z-index: 10;
-}
-
-/* ⚡ Status panel */
-.status {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  text-align: right;
-  font-size: 12px;
-  color: #00ffcc;
-  z-index: 10;
-}
-
-/* 📄 Left info panel */
-.info {
-  position: absolute;
-  left: 40px;
-  bottom: 100px;
-  max-width: 420px;
-  z-index: 10;
-}
-
-.info h1 {
-  font-size: 40px;
-  margin: 0;
-  letter-spacing: 3px;
-}
-
-.info h2 {
-  font-size: 12px;
-  color: #ff6a00;
-  letter-spacing: 2px;
-  margin-bottom: 15px;
-}
-
-.info p {
-  font-size: 14px;
-  line-height: 1.6;
-  color: #ccc;
-}
-
-/* 🆘 Buttons */
-.actions {
-  position: absolute;
-  bottom: 40px;
-  left: 40px;
-  z-index: 10;
-}
-
-button {
-  padding: 12px 25px;
-  border-radius: 30px;
-  border: none;
-  margin-right: 10px;
-  cursor: pointer;
-  font-weight: bold;
-}
-
-.primary {
-  background: linear-gradient(45deg, #ff6a00, #ff3300);
-  color: white;
-  box-shadow: 0 0 20px rgba(255,100,0,0.6);
-}
-
-.secondary {
-  background: transparent;
-  border: 1px solid #00e5ff;
-  color: #00e5ff;
-}
-
-button:hover {
-  transform: scale(1.05);
-}
-</style>
-</head>
-
-<body>
-
-<div id="container"></div>
-
-<div class="top-bar">
-  NEXPATH AI // HUMANITARIAN INTELLIGENCE CORE
-</div>
-
-<div class="status">
-  SYSTEM STATUS: ONLINE<br>
-  GLOBAL NETWORK: ACTIVE
-</div>
-
-<div class="info">
-  <h1>MANKIND GLOBAL</h1>
-  <h2>GLOBAL HUMANITARIAN ENGINE ONLINE</h2>
-
-  <p>
-    A Global Humanitarian Intelligence System powered by NexPath AI — delivering aid,
-    restoring dignity, and connecting humanity across borders through technology,
-    compassion, and action.
-    <br><br>
-    We are not just an organization. We are a coordinated global response system —
-    designed to reach the unseen, support the unheard, and rebuild lives at scale.
-    <br><br>
-    Founded by Tidimalo Konate. Inspired by Paul, Apostle of Christ.
-  </p>
-</div>
-
-<div class="actions">
-  <button class="primary">Request Help</button>
-  <button class="secondary">Donate</button>
-</div>
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
 <script>
@@ -152,7 +10,7 @@ const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.getElementById("container").appendChild(renderer.domElement);
 
-/* 🌐 AI NETWORK GLOBE */
+/* 🌐 DIGITAL GLOBE */
 const globe = new THREE.Mesh(
   new THREE.SphereGeometry(1, 64, 64),
   new THREE.MeshBasicMaterial({
@@ -164,24 +22,27 @@ const globe = new THREE.Mesh(
 );
 scene.add(globe);
 
-/* 🔥 NODES */
-const nodeMaterial = new THREE.MeshBasicMaterial({ color: 0xff6a00 });
+/* 🔥 PULSING NODES (AI SIGNALS) */
+const nodes = [];
 
-for (let i = 0; i < 150; i++) {
+for (let i = 0; i < 120; i++) {
   const phi = Math.random() * Math.PI;
   const theta = Math.random() * Math.PI * 2;
 
   const node = new THREE.Mesh(
     new THREE.SphereGeometry(0.012, 8, 8),
-    nodeMaterial
+    new THREE.MeshBasicMaterial({ color: 0xff6a00 })
   );
 
   node.position.setFromSphericalCoords(1, phi, theta);
   scene.add(node);
+  nodes.push(node);
 }
 
-/* ⚡ CONNECTIONS */
-for (let i = 0; i < 60; i++) {
+/* ⚡ ROUTES */
+const routes = [];
+
+for (let i = 0; i < 40; i++) {
   const start = new THREE.Vector3().setFromSphericalCoords(1, Math.random()*Math.PI, Math.random()*Math.PI*2);
   const end = new THREE.Vector3().setFromSphericalCoords(1, Math.random()*Math.PI, Math.random()*Math.PI*2);
 
@@ -191,17 +52,33 @@ for (let i = 0; i < 60; i++) {
     end
   );
 
-  const points = curve.getPoints(50);
+  const points = curve.getPoints(60);
   const geometry = new THREE.BufferGeometry().setFromPoints(points);
 
-  const line = new THREE.Line(geometry, new THREE.LineBasicMaterial({
+  const material = new THREE.LineBasicMaterial({
     color: 0x00e5ff,
     transparent: true,
-    opacity: 0.6
-  }));
+    opacity: 0.4
+  });
 
+  const line = new THREE.Line(geometry, material);
   scene.add(line);
+
+  routes.push({ curve, line, progress: Math.random() });
 }
+
+/* 🚀 DATA FLOW PARTICLES */
+const particles = [];
+
+routes.forEach(route => {
+  const particle = new THREE.Mesh(
+    new THREE.SphereGeometry(0.01, 8, 8),
+    new THREE.MeshBasicMaterial({ color: 0x00e5ff })
+  );
+
+  scene.add(particle);
+  particles.push({ particle, route });
+});
 
 /* 💡 LIGHT */
 const light = new THREE.PointLight(0xff6a00, 2);
@@ -211,8 +88,25 @@ scene.add(light);
 /* 🔄 ANIMATION */
 function animate() {
   requestAnimationFrame(animate);
-  globe.rotation.y += 0.0015;
-  scene.rotation.y += 0.0005;
+
+  globe.rotation.y += 0.001;
+  scene.rotation.y += 0.0003;
+
+  // 🔥 Pulse nodes
+  nodes.forEach((node, i) => {
+    const scale = 1 + Math.sin(Date.now() * 0.003 + i) * 0.5;
+    node.scale.set(scale, scale, scale);
+  });
+
+  // 🚀 Move particles along routes
+  particles.forEach(p => {
+    p.route.progress += 0.002;
+    if (p.route.progress > 1) p.route.progress = 0;
+
+    const pos = p.route.curve.getPoint(p.route.progress);
+    p.particle.position.copy(pos);
+  });
+
   renderer.render(scene, camera);
 }
 
@@ -225,6 +119,3 @@ window.addEventListener("resize", () => {
   renderer.setSize(window.innerWidth, window.innerHeight);
 });
 </script>
-
-</body>
-</html>
