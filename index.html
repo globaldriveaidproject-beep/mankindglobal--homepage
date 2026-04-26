@@ -2,244 +2,209 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Mankind Global | NexPath AI</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
 body {
   margin: 0;
-  background: #000;
-  color: #ffffff;
-  font-family: Arial, sans-serif;
   overflow: hidden;
+  font-family: 'Arial', sans-serif;
+  background: radial-gradient(circle at center, #05070d, #000000);
+  color: white;
 }
 
-/* GLOBE */
-#globe {
+#container {
   position: fixed;
-  top: 0;
-  left: 0;
   width: 100%;
   height: 100%;
 }
 
-/* OVERLAY */
 .overlay {
   position: absolute;
-  top: 0;
-  width: 100%;
+  z-index: 10;
   text-align: center;
-  padding-top: 100px;
-  background: rgba(0, 0, 0, 0.5);
+  top: 50%;
+  width: 100%;
+  transform: translateY(-50%);
+  padding: 20px;
+  background: rgba(0,0,0,0.25);
+  backdrop-filter: blur(8px);
 }
 
-/* TITLE */
 h1 {
-  font-size: 3.5em;
+  font-size: 42px;
   letter-spacing: 3px;
-  text-shadow: 0 0 25px #00f0ff;
+  margin-bottom: 10px;
 }
 
-/* SYSTEM TEXT */
-.system {
-  margin-top: 20px;
-  color: #00f0ff;
-  font-size: 0.9em;
+h2 {
+  font-size: 14px;
+  color: #00d4ff;
   letter-spacing: 2px;
-  animation: flicker 2s infinite alternate;
+  margin-bottom: 20px;
 }
 
-@keyframes flicker {
-  0% { opacity: 0.5; }
-  100% { opacity: 1; }
-}
-
-/* TEXT */
 p {
-  max-width: 800px;
-  margin: 20px auto;
-  opacity: 0.85;
+  max-width: 700px;
+  margin: auto;
+  font-size: 15px;
   line-height: 1.6;
+  color: #d0d0d0;
 }
 
-/* BUTTONS */
 .buttons {
   margin-top: 30px;
 }
 
-.button {
-  display: inline-block;
+button {
+  padding: 12px 28px;
   margin: 10px;
-  padding: 15px 30px;
-  border: 1px solid #00f0ff;
-  color: #00f0ff;
+  border-radius: 30px;
+  border: none;
   cursor: pointer;
+  font-weight: bold;
+  letter-spacing: 1px;
   transition: 0.3s;
 }
 
-.button:hover {
-  background: #00f0ff;
-  color: #000;
-  box-shadow: 0 0 25px #00f0ff;
+.btn-primary {
+  background: linear-gradient(45deg, #00d4ff, #0077ff);
+  color: white;
+  box-shadow: 0 0 15px rgba(0,212,255,0.4);
 }
 
-/* LIVE FEED */
-.feed {
-  position: absolute;
-  bottom: 20px;
-  left: 20px;
-  font-size: 0.8em;
-  color: #00f0ff;
-  text-align: left;
-  opacity: 0.8;
+.btn-primary:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 25px rgba(0,212,255,0.7);
+}
+
+.btn-secondary {
+  background: transparent;
+  border: 1px solid #00d4ff;
+  color: #00d4ff;
+}
+
+.btn-secondary:hover {
+  background: rgba(0,212,255,0.1);
 }
 </style>
 </head>
 
 <body>
 
-<canvas id="globe"></canvas>
+<div id="container"></div>
 
 <div class="overlay">
   <h1>MANKIND GLOBAL</h1>
-
-  <div class="system">
-    NEXPATH AI // GLOBAL HUMANITARIAN ENGINE ONLINE
-  </div>
+  <h2>NEXPATH AI // GLOBAL HUMANITARIAN ENGINE ONLINE</h2>
 
   <p>
     A Global Humanitarian Intelligence System powered by NexPath AI — delivering aid,
     restoring dignity, and connecting humanity across borders through technology,
     compassion, and action.
-  </p>
-
-  <p>
+    <br><br>
     We are not just an organization. We are a coordinated global response system —
     designed to reach the unseen, support the unheard, and rebuild lives at scale.
-  </p>
-
-  <p>
+    <br><br>
     Founded by Tidimalo Konaite. Inspired by Paul, Apostle of Christ.
   </p>
 
   <div class="buttons">
-    <div class="button">Request Help</div>
-    <div class="button">Donate</div>
+    <button class="btn-primary">Request Help</button>
+    <button class="btn-secondary">Donate</button>
   </div>
-</div>
-
-<div class="feed" id="feed">
-• System Initializing...
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
 <script>
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(0x000000);
 
-const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+const camera = new THREE.PerspectiveCamera(
+  75, window.innerWidth / window.innerHeight, 0.1, 1000
+);
+camera.position.z = 2.5;
 
-const renderer = new THREE.WebGLRenderer({
-  canvas: document.getElementById("globe"),
-  alpha: true,
-  antialias: true
-});
+const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
+document.getElementById("container").appendChild(renderer.domElement);
 
-/* LIGHTING */
-const ambientLight = new THREE.AmbientLight(0x222244);
+// 🌍 Texture (brighter, clearer Earth)
+const textureLoader = new THREE.TextureLoader();
+const earthTexture = textureLoader.load(
+  "https://threejs.org/examples/textures/planets/earth_atmos_2048.jpg"
+);
+
+// 🌍 Globe
+const geometry = new THREE.SphereGeometry(1, 64, 64);
+const material = new THREE.MeshStandardMaterial({
+  map: earthTexture,
+  roughness: 1,
+  metalness: 0,
+});
+const earth = new THREE.Mesh(geometry, material);
+scene.add(earth);
+
+// 💡 LIGHTING (balanced, soft cinematic)
+const ambientLight = new THREE.AmbientLight(0x404040, 1.2);
 scene.add(ambientLight);
 
-const directionalLight = new THREE.DirectionalLight(0x00f0ff, 1);
+const directionalLight = new THREE.DirectionalLight(0xffffff, 1.5);
 directionalLight.position.set(5, 3, 5);
 scene.add(directionalLight);
 
-/* EARTH */
-const geometry = new THREE.SphereGeometry(2, 64, 64);
-const texture = new THREE.TextureLoader().load(
-  'https://threejs.org/examples/textures/planets/earth_atmos_2048.jpg'
+// 🌌 Subtle glow (reduced intensity)
+const glowGeometry = new THREE.SphereGeometry(1.15, 64, 64);
+const glowMaterial = new THREE.MeshBasicMaterial({
+  color: 0x00d4ff,
+  transparent: true,
+  opacity: 0.08
+});
+const glow = new THREE.Mesh(glowGeometry, glowMaterial);
+scene.add(glow);
+
+// ✨ Stars (less aggressive, more natural)
+const starsGeometry = new THREE.BufferGeometry();
+const starsCount = 1500;
+const positions = [];
+
+for (let i = 0; i < starsCount; i++) {
+  positions.push((Math.random() - 0.5) * 200);
+  positions.push((Math.random() - 0.5) * 200);
+  positions.push((Math.random() - 0.5) * 200);
+}
+
+starsGeometry.setAttribute(
+  'position',
+  new THREE.Float32BufferAttribute(positions, 3)
 );
 
-const material = new THREE.MeshStandardMaterial({
-  map: texture,
-  roughness: 1,
-  metalness: 0
+const starsMaterial = new THREE.PointsMaterial({
+  size: 0.6,
+  opacity: 0.6,
+  transparent: true
 });
 
-const sphere = new THREE.Mesh(geometry, material);
-scene.add(sphere);
+const stars = new THREE.Points(starsGeometry, starsMaterial);
+scene.add(stars);
 
-/* NETWORK LINES */
-const lines = [];
-for (let i = 0; i < 20; i++) {
-  const material = new THREE.LineBasicMaterial({ color: 0x00f0ff });
-  const points = [];
-  points.push(new THREE.Vector3(0, 0, 0));
-  points.push(new THREE.Vector3(
-    (Math.random() - 0.5) * 5,
-    (Math.random() - 0.5) * 5,
-    (Math.random() - 0.5) * 5
-  ));
-  const geometry = new THREE.BufferGeometry().setFromPoints(points);
-  const line = new THREE.Line(geometry, material);
-  scene.add(line);
-  lines.push(line);
-}
-
-/* ACTIVITY POINTS */
-const points = [];
-for (let i = 0; i < 30; i++) {
-  const geometry = new THREE.SphereGeometry(0.02, 8, 8);
-  const material = new THREE.MeshBasicMaterial({ color: 0x00f0ff });
-  const point = new THREE.Mesh(geometry, material);
-
-  point.position.set(
-    (Math.random() - 0.5) * 4,
-    (Math.random() - 0.5) * 4,
-    (Math.random() - 0.5) * 4
-  );
-
-  scene.add(point);
-  points.push(point);
-}
-
-/* CAMERA */
-camera.position.z = 3;
-
-/* LIVE FEED TEXT */
-const messages = [
-  "• Aid Request Detected — Africa",
-  "• Dispatching Support — Middle East",
-  "• Signal Received — Europe",
-  "• Resource Allocation — Asia",
-  "• Emergency Response Activated"
-];
-
-let index = 0;
-setInterval(() => {
-  document.getElementById("feed").innerText = messages[index];
-  index = (index + 1) % messages.length;
-}, 2000);
-
-/* ANIMATION */
+// 🔄 Animation
 function animate() {
   requestAnimationFrame(animate);
-  sphere.rotation.y += 0.0015;
 
-  lines.forEach(line => {
-    line.rotation.y += 0.001;
-  });
+  earth.rotation.y += 0.0015;
+  glow.rotation.y += 0.0015;
 
   renderer.render(scene, camera);
 }
 animate();
 
-/* RESPONSIVE */
-window.addEventListener('resize', () => {
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  camera.aspect = window.innerWidth/window.innerHeight;
+// 📱 Responsive
+window.addEventListener("resize", () => {
+  camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
 });
 </script>
 
