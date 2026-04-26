@@ -14,19 +14,31 @@
       color: white;
     }
 
+    canvas {
+      display: block;
+    }
+
     #overlay {
       position: absolute;
       top: 50%;
-      left: 5%;
+      left: 6%;
       transform: translateY(-50%);
-      max-width: 500px;
+      max-width: 520px;
       z-index: 10;
     }
 
     h1 {
       font-size: 48px;
-      margin-bottom: 10px;
+      margin: 0;
       letter-spacing: 2px;
+    }
+
+    h2 {
+      font-size: 16px;
+      font-weight: normal;
+      color: #00cfff;
+      margin-top: 5px;
+      margin-bottom: 20px;
     }
 
     p {
@@ -36,15 +48,16 @@
 
     .btn {
       margin-top: 20px;
-      padding: 12px 20px;
-      border-radius: 25px;
+      padding: 12px 22px;
+      border-radius: 30px;
       border: none;
       cursor: pointer;
       font-weight: bold;
+      font-size: 14px;
     }
 
     .primary {
-      background: #ff7a18;
+      background: linear-gradient(45deg, #ff7a18, #ffb347);
       color: white;
     }
 
@@ -61,16 +74,18 @@
 
   <div id="overlay">
     <h1>MANKIND GLOBAL</h1>
+    <h2>Powered by NexPath AI</h2>
+
     <p>
-      NexPath AI Humanitarian Intelligence System — delivering aid,
-      restoring dignity, and connecting humanity through technology.
+      A Global Humanitarian Intelligence System delivering aid, restoring dignity,
+      and connecting humanity across borders through advanced technology.
     </p>
 
     <button class="btn primary">Request Help</button>
     <button class="btn secondary">Donate</button>
   </div>
 
-  <!-- Three.js CDN -->
+  <!-- Three.js -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
   <script>
@@ -91,8 +106,9 @@
       renderer.setSize(window.innerWidth, window.innerHeight);
       document.body.appendChild(renderer.domElement);
 
-      // Globe (safe version: no textures = no crashes)
+      // Globe
       const geometry = new THREE.SphereGeometry(1, 64, 64);
+
       const material = new THREE.MeshBasicMaterial({
         color: 0x00cfff,
         wireframe: true
@@ -114,7 +130,7 @@
 
     window.onload = init;
 
-    // Responsive
+    // Resize fix
     window.addEventListener('resize', () => {
       camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
